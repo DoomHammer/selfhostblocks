@@ -1105,7 +1105,7 @@ in
           }
         ];
 
-        services.nextcloud.extraApps = {
+        services.nextcloud.extraApps = lib.optionalAttrs (cfg.version == 31) {
           inherit (nextcloudApps) oidc_login;
         };
 
@@ -1212,13 +1212,13 @@ in
             authorization_policy = cfg.apps.sso.authorization_policy;
             require_pkce = "true";
             pkce_challenge_method = "S256";
-            redirect_uris = [ "${protocol}://${fqdnWithPort}/apps/oidc_login/oidc" ];
+            redirect_uris = [ "${protocol}://${fqdnWithPort}/apps/user_oidc/code" ];
             inherit scopes;
             response_types = [ "code" ];
             grant_types = [ "authorization_code" ];
             access_token_signed_response_alg = "none";
             userinfo_signed_response_alg = "none";
-            token_endpoint_auth_method = "client_secret_basic";
+            token_endpoint_auth_method = "client_secret_post";
           }
         ];
       }
